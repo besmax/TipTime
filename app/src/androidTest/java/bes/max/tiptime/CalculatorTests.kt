@@ -20,7 +20,7 @@ class CalculatorTests {
     val activity = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun calculate_20_percent_tip() {
+    fun calculate_20_percent_tip_with_roundup() {
 
         //имитируем ввод текста в поле
         onView(withId(R.id.cost_of_service_edit_text)).perform(typeText("50.00"))
@@ -31,5 +31,52 @@ class CalculatorTests {
         //проверяем сколько отобразилось чаевых
         onView(withId(R.id.tip_result))
             .check(matches(withText(containsString("$10.00"))))
+    }
+
+    @Test
+    fun calculate_20_percent_tip_without_roundup() {
+        onView(withId(R.id.cost_of_service_edit_text)).perform(typeText("54.00"))
+        onView(withId(R.id.round_up_switch)).perform(click())
+        onView(withId(bes.max.tiptime.R.id.calculate_button)).perform(click())
+        onView(withId(R.id.tip_result))
+            .check(matches(withText(containsString("$10.80"))))
+    }
+
+    @Test
+    fun calculate_18_percent_tip_with_roundup() {
+        onView(withId(R.id.cost_of_service_edit_text)).perform(typeText("50.00"))
+        onView(withId(R.id.option_eighteen_percent)).perform(click())
+        onView(withId(bes.max.tiptime.R.id.calculate_button)).perform(click())
+        onView(withId(R.id.tip_result))
+            .check(matches(withText(containsString("$9.00"))))
+    }
+
+    @Test
+    fun calculate_18_percent_tip_without_roundup() {
+        onView(withId(R.id.cost_of_service_edit_text)).perform(typeText("54.00"))
+        onView(withId(R.id.option_eighteen_percent)).perform(click())
+        onView(withId(R.id.round_up_switch)).perform(click())
+        onView(withId(bes.max.tiptime.R.id.calculate_button)).perform(click())
+        onView(withId(R.id.tip_result))
+            .check(matches(withText(containsString("$9.72"))))
+    }
+
+    @Test
+    fun calculate_15_percent_tip_with_roundup() {
+        onView(withId(R.id.cost_of_service_edit_text)).perform(typeText("50.00"))
+        onView(withId(R.id.option_fifteen_percent)).perform(click())
+        onView(withId(bes.max.tiptime.R.id.calculate_button)).perform(click())
+        onView(withId(R.id.tip_result))
+            .check(matches(withText(containsString("$8.00"))))
+    }
+
+    @Test
+    fun calculate_15_percent_tip_without_roundup() {
+        onView(withId(R.id.cost_of_service_edit_text)).perform(typeText("50.00"))
+        onView(withId(R.id.option_fifteen_percent)).perform(click())
+        onView(withId(R.id.round_up_switch)).perform(click())
+        onView(withId(bes.max.tiptime.R.id.calculate_button)).perform(click())
+        onView(withId(R.id.tip_result))
+            .check(matches(withText(containsString("$7.50"))))
     }
 }
